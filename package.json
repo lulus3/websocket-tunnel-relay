@@ -1,0 +1,17 @@
+{
+  "name": "jetbrains-mcp-websocket-relay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A reverse WebSocket tunnel for securely exposing configured private HTTP services.",
+  "engines": {
+    "node": ">=20.6.0"
+  },
+  "scripts": {
+    "server": "node --env-file=server/.env server/src/index.mjs",
+    "agent": "node --env-file=agent/.env agent/src/index.mjs"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

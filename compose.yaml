@@ -1,0 +1,28 @@
+services:
+  relay:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: websocket-tunnel-relay:local
+    env_file:
+      - ./server/.env
+    environment:
+      # The container needs to listen on every container interface. The host
+      # binding stays configurable through RELAY_BIND_ADDRESS below.
+      HOST: 0.0.0.0
+    ports:
+      - "${RELAY_BIND_ADDRESS:-127.0.0.1}:${RELAY_HOST_PORT:-8787}:8787"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - node -e "fetch('http://127.0.0.1:8787/healthz').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
