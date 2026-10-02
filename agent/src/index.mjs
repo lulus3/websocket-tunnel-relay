@@ -60,6 +60,7 @@ async function handleMessage(socket, message) {
   try {
     const outbound = message.request || {};
     const targetUrl = serviceUrl(outbound.service, outbound.pathAndQuery);
+    console.log(`[${message.requestId}] Forwarding ${outbound.method || "POST"} to ${targetUrl}`);
     const response = await fetch(targetUrl, {
       method: outbound.method || "POST",
       headers: filterHeaders(outbound.headers || {}),
@@ -67,6 +68,7 @@ async function handleMessage(socket, message) {
       signal: controller.signal,
       redirect: "manual",
     });
+    console.log(`[${message.requestId}] Local service responded with ${response.status}`);
 
     send(socket, {
       type: "proxy_response_start",
@@ -85,6 +87,7 @@ async function handleMessage(socket, message) {
     }
     send(socket, { type: "proxy_response_end", requestId: message.requestId });
   } catch (error) {
+    console.error(`[${message.requestId}] Local service request failed:`, error);
     send(socket, {
       type: "proxy_error",
       requestId: message.requestId,
