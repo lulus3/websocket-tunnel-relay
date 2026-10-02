@@ -9,7 +9,8 @@ const config = {
   clientToken: required("CLIENT_BEARER_TOKEN"),
   agentToken: required("AGENT_BEARER_TOKEN"),
   maxRequestBytes: positiveInteger("MAX_REQUEST_BYTES", 10 * 1024 * 1024),
-  requestTimeoutMs: positiveInteger("REQUEST_TIMEOUT_MS", 120_000),
+  // Streamable HTTP may legitimately keep a response open while an MCP session is active.
+  requestTimeoutMs: positiveInteger("REQUEST_TIMEOUT_MS", 3_600_000),
 };
 
 const agents = new Map();

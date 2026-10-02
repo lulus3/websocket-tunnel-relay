@@ -46,6 +46,9 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
   `/tunnel/<serviço>`.
 - `AGENT_BEARER_TOKEN`: autentica a conexão WebSocket de saída do agente.
 - `TUNNEL_AGENT_ID`: deve ser igual a `AGENT_ID` na máquina privada.
+- `REQUEST_TIMEOUT_MS`: tempo máximo de uma requisição encaminhada. Para MCP
+  com HTTP streaming, use `3600000` (uma hora) para não encerrar sessões
+  legítimas em andamento.
 
 Não versione nem publique o arquivo `server/.env`.
 
